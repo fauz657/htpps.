@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Ucapan Selamat Ulang Tahun</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+    body {
+      margin: 0;
+      background: linear-gradient(45deg, #f7f5f5 0%, #f19999 99%, #fad0c4 100%);
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .container {
+      background: rgb(5, 53, 187);
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(224, 221, 221, 0.2);
+      padding: 30px;
+      max-width: 350px;
+      width: 100%;
+      text-align: center;
+      user-select: none;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      color: #e6e3ec;
+      animation: pulse 2s infinite;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+      color: #4f32c2;
+    }
+
+    input[type="text"], input[type="number"] {
+      width: 80%;
+      padding: 10px 15px;
+      margin: 10px 0 20px 0;
+      border: 2px solid #120eec;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    input[type="text"]:focus, input[type="number"]:focus {
+      border-color: #061de7;
+      outline: none;
+    }
+
+    button {
+      background: #ff18a6;
+      color: #fcf6f6;
+      font-weight: 700;
+      border: none;
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      user-select: none;
+    }
+
+    button:hover {
+      background: hsl(220, 10%, 94%);
+    }
+
+    .message {
+      font-size: 1.25rem;
+      color: #ebedf5;
+      font-weight: 600;
+      min-height: 80px;
+      line-height: 1.4;
+      margin-top: 20px;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+
+    /* Pulse animation for heading */
+    @keyframes pulse {
+      0%, 100% { text-shadow: 0 0 8px #9c9cc7; }
+      50% { text-shadow: 0 0 20px #f4f4f8f6; }
+    }
+
+    /* Fade in message */
+    @keyframes fadeInMessage {
+      from { opacity: 0; transform: translateY(10px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    /* Balloon animation container */
+    .balloon-container {
+      position: relative;
+      height: 150px;
+      margin-top: 30px;
+      overflow: visible;
+    }
+
+    .balloon {
+      position: absolute;
+      bottom: 0;
+      width: 40px;
+      height: 60px;
+      background: #faf9fc;
+      border-radius: 20px 20px 40px 40px;
+      opacity: 0.9;
+      animation: floatUp linear infinite;
+      filter: drop-shadow(0 4px 2px rgba(247, 241, 241, 0.1));
+    }
+
+    .balloon::before {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      width: 2px;
+      height: 20px;
+      background: #fdfdfd;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .balloon:nth-child(1) {
+      left: 10%;
+      background: #fc03fc;
+      animation-duration: 6s;
+      animation-delay: 0s;
+      opacity: 0.9;
+    }
+
+    .balloon:nth-child(2) {
+      left: 35%;
+      background: #e60bc1;
+      animation-duration: 7s;
+      animation-delay: 1s;
+      opacity: 0.8;
+    }
+
+    .balloon:nth-child(3) {
+      left: 60%;
+      background: #fa0a7a;
+      animation-duration: 5.5s;
+      animation-delay: 2s;
+      opacity: 0.85;
+    }
+
+    .balloon:nth-child(4) {
+      left: 85%;
+      background: #f10ead;
+      animation-duration: 6.5s;
+      animation-delay: 0.5s;
+      opacity: 0.9;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.9;
+      }
+      50% {
+        transform: translateY(-80px) translateX(10px);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-160px) translateX(0);
+        opacity: 0;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Selamat Ulang Tahun!</h1>
+    <input type="text" id="nama" placeholder="Masukkan nama" autocomplete="off" />
+    <input type="number" id="usia" placeholder="Masukkan usia" min="0" max="120" />
+    <button id="ucapkanBtn">Ucapkan</button>
+    <div class="message" id="message"></div>
+    <div class="balloon-container" aria-hidden="true">
+      <div class="balloon"></div>
+      <div class="balloon"></div>
+      <div class="balloon"></div>
+      <div class="balloon"></div>
+    </div>
+  </div>
+
+  <script>
+    const btn = document.getElementById('ucapkanBtn');
+    const namaInput = document.getElementById('nama');
+    const usiaInput = document.getElementById('usia');
+    const message = document.getElementById('message');
+
+    function animateMessageFadeIn() {
+      message.style.animation = 'none';
+      message.offsetHeight; /* trigger reflow */
+      message.style.animation = 'fadeInMessage 1s forwards';
+    }
+
+    btn.addEventListener('click', () => {
+      const nama = namaInput.value.trim();
+      const usia = usiaInput.value.trim();
+
+      if (nama === '') {
+        message.textContent = 'Mohon masukkan nama.';
+        animateMessageFadeIn();
+        return;
+      }
+      if (usia === '') {
+        message.textContent = 'Mohon masukkan usia.';
+        animateMessageFadeIn();
+        return;
+      }
+      if (isNaN(usia) || usia < 0 || usia > 120) {
+        message.textContent = 'Mohon masukkan usia yang valid (0 - 120).';
+        animateMessageFadeIn();
+        return;
+      }
+
+      message.innerHTML = `
+        Halo <strong>${nama}</strong>!<br/>
+        Selamat ulang tahun yang ke-<strong>${usia}</strong>! 🎉<br/>
+        Semoga semua impianmu tercapai dan hari ini penuh kebahagiaan!
+      `;
+      animateMessageFadeIn();
+    });
+
+    // Accessibility: Enter key triggers button click
+    [namaInput, usiaInput].forEach(input => {
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          btn.click();
+          e.preventDefault();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+
